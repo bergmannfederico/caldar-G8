@@ -1,0 +1,7 @@
+// getTechniciansAll
+
+// getTechnicianById
+
+// getTechniciansByAttribute
+
+// deleteTechnicianById
