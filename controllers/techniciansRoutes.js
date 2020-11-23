@@ -4,18 +4,11 @@ const technicians = require('../data/technicians.json')
 const _ = require('underscore')
 const fs = require('fs');
 const dataPath = './data/technicians.json';
-
-
-
-
 //Routes
-
 // getTechniciansAll
 router.get('/', (req, res) => {
     res.json(technicians);
 })
-
-
 // getTechnicianById
 router.get('/id/:id', (req, res) => {
     const {id} = req.params;
@@ -26,7 +19,6 @@ router.get('/id/:id', (req, res) => {
     })
     res.status(400).json({msg: `No technicians found whit id: ${req.params.id}`})
 })
-
 // getTechniciansByAttribute(first_name)
 router.get('/first_name/:first_name', (req, res) => {
     const {first_name} = req.params;
@@ -119,7 +111,4 @@ router.delete('/delete/:id', (req, res) => {
         }
     });
 })
-
-
-
 module.exports = router;
