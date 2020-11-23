@@ -9,9 +9,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //HomePage Route
-app.get("/", (req, res) => {
-    res.render("index", { title: "Customer App", customers });
-});
+//app.get("/", (req, res) => {
+// res.render("index", { title: "Customer App", customers });
+//});
 
 //Set static folder
 app.use(express.static(path.join(__dirname, "public")));
