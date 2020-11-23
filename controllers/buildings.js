@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const dataPath = './data/buildings.json';
-const logger = require('slf4n').default.get(module);
-
+require('slf4n-logging');
+const logger = LoggerFactory.getLogger('Buildings')
 
 // Get all buildings
 router.get('/', (req, res) =>{

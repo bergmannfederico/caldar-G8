@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "slf4n": "^0.1.1"
+    "slf4n-logging": "^1.0.0"
   },
   "devDependencies": {},
   "repository": {
