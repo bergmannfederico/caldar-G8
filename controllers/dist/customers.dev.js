@@ -1,6 +1,7 @@
 "use strict";
 
-var express = require('express');
+var express = require('express'); //const uuid = require('uuid');
+
 
 var router = express.Router();
 
@@ -22,6 +23,24 @@ router.get('/:id', function (req, res) {
 
   if (found) {
     res.json(customers.filter(idFilter(req)));
+  } else {
+    res.status(400).json({
+      msg: "No customer with the id of ".concat(req.params.id)
+    });
+  }
+}); //Get Customers By Attibute
+//Delete Customer By ID
+
+router["delete"]('/:id', function (req, res) {
+  var found = customers.some(idFilter(req));
+
+  if (found) {
+    res.json({
+      msg: "Customer deleted",
+      customers: customers.filter(function (member) {
+        return !idFilter(req)(member);
+      })
+    });
   } else {
     res.status(400).json({
       msg: "No customer with the id of ".concat(req.params.id)
