@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "slf4n": "^0.1.1"
   },
   "devDependencies": {},
   "repository": {
