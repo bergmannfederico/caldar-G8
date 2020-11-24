@@ -18,9 +18,9 @@ router.get('/attributes', (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: getBuildingByAttr');
         const buildings = JSON.parse(data);
-        if(req.query.adress){
-            logger.info(`Returning buildings with attribute adress equal to ${req.query.adress}`);
-            return res.json(buildings.filter(building => building.adress === req.query.adress));
+        if(req.query.address){
+            logger.info(`Returning buildings with attribute address equal to ${req.query.address}`);
+            return res.json(buildings.filter(building => building.address === req.query.address));
         }else if(req.query.full_name){
             logger.info(`Returning buildings with attribute full name equal to ${req.query.full_name}`);
             return res.json(buildings.filter(building => building.full_name === req.query.full_name));
