@@ -2,6 +2,9 @@ const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const boilers = require('../data/boilers.json');
+const fs = require ('fs');
+const dataPath = '.data/boilers.json';
+
 
 // Get all boilers
 
@@ -47,5 +50,16 @@ router.get('/description/:description', (require, response) => {
         response.status(400).json({ msg: `No boiler found with the description ${require.params.description}`})
     }
 })
+
+//Delete boiler by id
+
+app.delete('/api/building/:id', (req, res) => {
+    const found = boilers.some(boilers => boilers._id.$oid === req.params.id);
+    if (found) {
+        res.json(buildings.filter(building => building._id.$oid === req.params.id));
+    } else {
+        res.status(400).json({msg: `No building with id: ${req.params.id}`});
+    }
+});
 
 module.exports = router;
