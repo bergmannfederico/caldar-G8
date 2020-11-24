@@ -2,25 +2,25 @@
     {
         "id": 1,
         "skillsId": "A",
-        "description": "Cum sociis natoque penatibus et magnis dis parturient montes.",
+        "description": "homely a",
         "stock": 24
     },
     {
         "id": 2,
         "skillsId": "B",
-        "description": "Fusce consequat. Nulla nisl.",
+        "description": "homely b",
         "stock": 14
     },
     {
         "id": 3,
         "skillsId": "C",
-        "description": "In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus.",
+        "description": "ecological",
         "stock": 0
     },
     {
         "id": 4,
         "skillsId": "D",
-        "description": "In hac habitasse platea dictumst. Etiam faucibus cursus urna.",
+        "description": "industrial",
         "stock": 2
     }
 ]
