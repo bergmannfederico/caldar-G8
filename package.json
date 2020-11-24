@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node express-server.js",
     "index": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev-index": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,9 @@
   "dependencies": {
     "express": "^4.17.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bergmannfederico/caldar-G8.git"
