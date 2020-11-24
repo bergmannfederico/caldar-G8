@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node express-server.js",
     "index": "node index.js",
-    "dev-index": "nodemon index.js"
+    "dev": "nodemon express-server.js"
   },
   "keywords": [],
   "author": "",

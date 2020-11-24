@@ -6,6 +6,9 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 })
 
+// Appointments API Routes
+app.use('/appointments', require('./controllers/appointments'));
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 })
