@@ -11,16 +11,8 @@ var app = express(); //BodyParser
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false
-})); //HomePage Route
+})); //Customers API Routes
 
-app.get("/", function (req, res) {
-  res.render("index", {
-    title: "Customer App",
-    customers: customers
-  });
-}); //Set static folder
-
-app.use(express["static"](path.join(__dirname, "public")));
 app.use('/customers', require('./controllers/customers.js'));
 var PORT = process.env.PORT || 5000;
 app.listen(PORT, function () {
