@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const uuid = require('uuid');
 const fs = require('fs');
 const dataPath = './data/appointments.json';
 
@@ -35,9 +36,8 @@ const getAppointmentByAttribute = (req) => {
 
     if(flag_filter){
         return (filterData);
-    }/*else{
-        res.status(400).json({msg: `Attribute not found`}); 
-    }   */ 
+    }        
+    //res.status(400).json({msg: `Attribute not found`}); 
 }
 
 function getAppointmentById(id){
@@ -46,9 +46,8 @@ function getAppointmentById(id){
 
     if (found){
         return appointmentsData.filter(appointment => appointment.id === parseInt(id)); 
-    } /*else{
-        res.status(400).json({msg: `Appointments with ID = ${id} not found`});
-    }*/
+    }
+    //res.status(400).json({msg: `Appointments with ID = ${id} not found`});
 }
 
 function deleteAppointmentById(id){
@@ -59,11 +58,28 @@ function deleteAppointmentById(id){
         fs.writeFileSync(dataPath,JSON.stringify(appointmentsData.filter(appointment => appointment.id !== parseInt(id))));
         return JSON.parse(fs.readFileSync(dataPath));
         //return appointmentsData.filter(appointment => appointment.id !== parseInt(id));
-    } /*else{
-        res.status(400).json({msg: `Appointments with ID = ${id} not found`});
-    }*/
+    } 
+    
+    //res.status(400).json({msg: `Appointments with ID = ${id} not found`});
 }
 
+function postAppointment(req){
+    const newAppointment = {
+        id: req.body.id,
+        buildingId: req.body.buildingId,
+        boilerId: req.body.boilerId,
+        start_timestamp: req.body.start_timestamp,
+        end_timestamp: req.body.end_timestamp
+    };
+
+    let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
+    appointmentsData.push(newAppointment);
+    fs.writeFileSync(dataPath,JSON.stringify(appointmentsData));
+    return JSON.parse(fs.readFileSync(dataPath));
+
+    //res.status(400).json({msg: `Appointments with ID = ${id} not found`});
+    
+}
 
 
 
@@ -83,6 +99,10 @@ router.get('/:id', (req, res) =>{
 
 router.delete('/:id', (req, res) =>{
     res.json(deleteAppointmentById(req.params.id));
+});
+
+router.post('/', (req, res) =>{
+    res.json(postAppointment(req));
 });
 
 

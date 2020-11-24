@@ -7,6 +7,8 @@ app.get('/', (req, res) => {
 })
 
 // Appointments API Routes
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 app.use('/appointments', require('./controllers/appointments'));
 
 app.listen(port, () => {
