@@ -1,10 +1,6 @@
-const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const boilers = require('../data/boilers.json');
-const fs = require ('fs');
-const dataPath = '.data/boilers.json';
-
 
 // Get all boilers
 
@@ -53,13 +49,18 @@ router.get('/description/:description', (require, response) => {
 
 //Delete boiler by id
 
-app.delete('/api/building/:id', (req, res) => {
-    const found = boilers.some(boilers => boilers._id.$oid === req.params.id);
-    if (found) {
-        res.json(buildings.filter(building => building._id.$oid === req.params.id));
+router.delete("/:id", (require, response) => {
+    const idFilter = (require) => (boiler) => boiler.id === parseInt(require.params.id);
+    const element = boilers.some(idFilter(require));
+  
+    if (element == true) {
+      response.json({
+        msg: "Boiler deleted",
+        boilers: boilers.filter((boiler) => !idFilter(require)(boiler)),
+      });
     } else {
-        res.status(400).json({msg: `No building with id: ${req.params.id}`});
+      response.status(400).json({ msg: `No bolier with the id of ${require.params.id}` });
     }
-});
-
+  });
+  
 module.exports = router;

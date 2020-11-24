@@ -3,13 +3,13 @@
         "id": 1,
         "skillsId": "A",
         "description": "homely a",
-        "stock": 24
+        "stock": 20
     },
     {
         "id": 2,
         "skillsId": "B",
         "description": "homely b",
-        "stock": 14
+        "stock": 18
     },
     {
         "id": 3,
