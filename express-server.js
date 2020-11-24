@@ -6,6 +6,9 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 })
 
+// Building API Routes
+app.use('/buildings', require('./controllers/buildings'));
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 })
