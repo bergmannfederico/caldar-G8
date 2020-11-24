@@ -3,14 +3,12 @@ const router = express.Router();
 const fs = require('fs');
 let appointmentsData = JSON.parse(fs.readFileSync('./data/appointments.json'));
 
-// getAllAppointments
-router.get('/', (req, res) =>{
-    res.send(appointmentsData);
-});
 
+// API Functions
 
-// getAppointmentByAttribute
-router.get('/attributes', (req, res) => {   
+const getAllAppointments = () => appointmentsData;
+
+const getAppointmentByAttribute = (req) => {
     let filterData = appointmentsData; 
     let flag_filter = false;
     if(req.query.id){
@@ -35,22 +33,39 @@ router.get('/attributes', (req, res) => {
     }
 
     if(flag_filter){
-        res.json(filterData);
-    }else{
+        return (filterData);
+    }/*else{
         res.status(400).json({msg: `Attribute not found`}); 
-    }    
-});
-    
+    }   */ 
+}
 
-// getAppointmentById
-router.get('/:id', (req, res) =>{
-    const found = appointmentsData.some(appointment => appointment.id === parseInt(req.params.id));
+function getAppointmentById(id){
+    const found = appointmentsData.some(appointment => appointment.id === parseInt(id));
 
     if (found){
-        res.json(appointmentsData.filter(appointment => appointment.id === parseInt(req.params.id))); 
-    } else{
-        res.status(400).json({msg: `Appointments with ID = ${req.params.id} not found`});
-    }
+        return appointmentsData.filter(appointment => appointment.id === parseInt(id)); 
+    } /*else{
+        res.status(400).json({msg: `Appointments with ID = ${id} not found`});
+    }*/
+}
+
+
+
+// Routing
+
+router.get('/', (req, res) =>{
+    res.json(getAllAppointments());
 });
+
+router.get('/attributes', (req, res) => {   
+    res.json(getAppointmentByAttribute(req));
+});
+
+router.get('/:id', (req, res) =>{
+    res.json(getAppointmentById(req.params.id));
+});
+
+
+
 
 module.exports = router;
