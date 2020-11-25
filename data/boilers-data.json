@@ -1,0 +1,30 @@
+[
+    {
+        "id":1,
+        "typeId":1,
+        "maintenance_rate":"yearly",
+        "hour_maintenance_cost":"$346.28",
+        "hour_eventual_cost":"$749.43"
+    },
+    {
+        "id":2,
+        "typeId":2,
+        "maintenance_rate":"yearly",
+        "hour_maintenance_cost":"$329.98",
+        "hour_eventual_cost":"$616.49"
+    },
+    {
+        "id":3,
+        "typeId":3,
+        "maintenance_rate":"monthly",
+        "hour_maintenance_cost":"$230.04",
+        "hour_eventual_cost":"$576.65"
+    },
+    {
+        "id":4,
+        "typeId":4,
+        "maintenance_rate":"quarterly",
+        "hour_maintenance_cost":"$221.48",
+        "hour_eventual_cost":"$569.82"
+    }
+]
