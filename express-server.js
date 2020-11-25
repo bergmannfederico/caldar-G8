@@ -20,6 +20,9 @@ app.use('/api/technicians',require('../caldar-G8/controllers/techniciansRoutes')
 // Building API Routes
 app.use('/buildings', require('./controllers/buildings'));
 
+//Customers API Routes
+app.use('/customers', require('./controllers/customers'));
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 })
