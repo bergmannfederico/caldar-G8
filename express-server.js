@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
+const port = 3000;
 
 
 
@@ -16,10 +17,6 @@ app.use(express.json());
 // Technicians API Routes
 app.use('/api/technicians',require('../caldar-G8/controllers/techniciansRoutes'));
 
-// Starting server
-app.listen(app.get('port'), () =>{
-    console.log('Server on port 3000')
-})
 // Building API Routes
 app.use('/buildings', require('./controllers/buildings'));
 
