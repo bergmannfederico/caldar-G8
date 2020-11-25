@@ -13,10 +13,16 @@ app.use(cors())
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-//Routes
+// Technicians API Routes
 app.use('/api/technicians',require('../caldar-G8/controllers/techniciansRoutes'));
 
 // Starting server
 app.listen(app.get('port'), () =>{
     console.log('Server on port 3000')
+})
+// Building API Routes
+app.use('/buildings', require('./controllers/buildings'));
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
 })
