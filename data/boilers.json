@@ -1,25 +1,25 @@
 [
     {
         "id": 1,
-        "skillsId": "A",
+        "skillsId": [1,2,3],
         "description": "homely a",
         "stock": 20
     },
     {
         "id": 2,
-        "skillsId": "B",
+        "skillsId": [3,5],
         "description": "homely b",
         "stock": 18
     },
     {
         "id": 3,
-        "skillsId": "C",
+        "skillsId": [1,2,6],
         "description": "ecological",
         "stock": 0
     },
     {
         "id": 4,
-        "skillsId": "D",
+        "skillsId": [1,2],
         "description": "industrial",
         "stock": 2
     }

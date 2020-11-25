@@ -24,7 +24,7 @@ router.get('/id/:id', (require, response) => {
 // Get boiler by attribute: skillsId
 
 router.get('/skillsId/:skillsId', (require, response) => {
-    const idFilter = (require) => (boiler) => boiler.skillsId === (require.params.skillsId);
+    const idFilter = (require) => (boiler) => boiler.skillsId.includes(parseInt(require.params.skillsId));
     const element = boilers.some(idFilter(require));
 
     if (element == true) {
