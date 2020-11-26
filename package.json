@@ -1,0 +1,31 @@
+{
+    "name": "curso-radium",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node express-server.js",
+        "starts": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon index"
+    },
+    "keywords": [],
+    "author": "Stella Maris Rodríguez",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "express-handlebars": "^5.2.0",
+        "mon": "0.0.8",
+        "nodemon": "^2.0.6"
+    },
+    "devDependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bergmannfederico/caldar-G8.git"
+    },
+    "bugs": {
+        "url": "https://github.com/bergmannfederico/caldar-G8/issues"
+    },
+    "homepage": "https://github.com/bergmannfederico/caldar-G8#readme"
+}
