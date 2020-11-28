@@ -6,20 +6,24 @@
   "scripts": {
     "start": "node express-server.js",
     "index": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon express-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "express-handlebars": "^5.2.0"
-  }
-=======
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "underscore": "^1.11.0",
+    "slf4n-logging": "^1.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.6",
+    "pre-commit": "^1.2.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bergmannfederico/caldar-G8.git"
@@ -27,6 +31,6 @@
   "bugs": {
     "url": "https://github.com/bergmannfederico/caldar-G8/issues"
   },
-  "homepage": "https://github.com/bergmannfederico/caldar-G8#readme"
->>>>>>> bedebcd... corrections for npm scripts
+  "homepage": "https://github.com/bergmannfederico/caldar-G8#readme",
+  "pre-commit": "lint"
 }
