@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
+//const cors = require('cors');
 const port = 3000;
 
 
 
 // Settings
-app.set('port', process.env.PORT || 3000);
+/*pp.set('port', process.env.PORT || 3000);
 app.set('json spaces', 2);
 app.use(cors());
-
+*/
 //Middlewares
 //app.use(express.urlencoded({extended: false}));
 //app.use(express.json());
@@ -34,7 +34,7 @@ app.listen(port, () => {
 })
 
 //Boilers API routes
-app.use('/boilers-data', require('./controllers/boilers-data'));
+//app.use('/boilers-data', require('./controllers/boilers-data'));
 
 const PORT = process.env.PORT || 4000;
 
