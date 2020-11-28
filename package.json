@@ -7,7 +7,7 @@
     "start": "node express-server.js",
     "index": "node index.js",
     "dev": "nodemon express-server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1"
     //"lint": "eslint"
   },
   "keywords": [],
@@ -21,7 +21,7 @@
     "slf4n-logging": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6",
+    "nodemon": "^2.0.6"
     //"pre-commit": "^1.2.2"
   },
   "repository": {

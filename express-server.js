@@ -1,13 +1,9 @@
 const express = require('express');
 const app = express();
-<<<<<<< HEAD
 
 const cors = require('cors');
 
-=======
-const cors = require('cors');
->>>>>>> 0354e7733f39fd927f0990afaa9e401a0ef4fa97
-const port = 3000;
+const port = 5000;
 
 
 
@@ -35,13 +31,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use('/appointments', require('./controllers/appointments'));
 
+//Boilers API routes
+app.use('/boilers-data', require('./controllers/boilers-data'));
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 })
 
-//Boilers API routes
-app.use('/boilers-data', require('./controllers/boilers-data'));
+//const PORT = process.env.PORT || 4000;
 
-const PORT = process.env.PORT || 4000;
-
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+//app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
