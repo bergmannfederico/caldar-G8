@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node express-server.js",
     "index": "node index.js",
-    "dev": "nodemon express-server.js"
+    "dev": "nodemon express-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +18,12 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "underscore": "^1.11.0",
+    "slf4n-logging": "^1.0.0",
+    "pre-commit": "^1.2.2"
   },
   "repository": {
     "type": "git",
@@ -25,5 +32,6 @@
   "bugs": {
     "url": "https://github.com/bergmannfederico/caldar-G8/issues"
   },
-  "homepage": "https://github.com/bergmannfederico/caldar-G8#readme"
+  "homepage": "https://github.com/bergmannfederico/caldar-G8#readme",
+  "pre-commit": "lint"
 }
