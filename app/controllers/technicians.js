@@ -1,14 +1,18 @@
-const { Router } = require('express');
-const router = Router();
-const technicians = require('../../data/technicians.json')
-const _ = require('underscore')
+//const technicians = require('../../data/technicians.json');
+//const _ = require('underscore');
 const fs = require('fs');
 const dataPath = './data/technicians.json';
-//Routes
-// getTechniciansAll
-router.get('/', (req, res) => {
-    res.json(technicians);
-})
+require('slf4n-logging');
+const logger = LoggerFactory.getLogger('Technicians')
+
+// Get all technicians
+exports.findAll = (req, res) =>{
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        logger.info('Endpoint called: getAllTechnicians')
+        res.send(JSON.parse(data));
+    });
+};
+/*
 // getTechnicianById
 router.get('/id/:id', (req, res) => {
     const {id} = req.params;
@@ -111,4 +115,4 @@ router.delete('/delete/:id', (req, res) => {
         }
     });
 })
-module.exports = router;
+*/
