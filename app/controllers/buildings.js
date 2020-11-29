@@ -1,20 +1,18 @@
-const express = require('express');
-const router = express.Router();
 const fs = require('fs');
 const dataPath = './data/buildings.json';
 require('slf4n-logging');
 const logger = LoggerFactory.getLogger('Buildings')
 
 // Get all buildings
-router.get('/', (req, res) =>{
+exports.findAll = (req, res) =>{
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: getAllBuildings')
         res.send(JSON.parse(data));
     });
-});
+};
 
 //Get building by Attribute
-router.get('/attributes', (req, res) => {
+exports.findOneByAttr = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: getBuildingByAttr');
         const buildings = JSON.parse(data);
@@ -37,10 +35,10 @@ router.get('/attributes', (req, res) => {
         }
         return res.json('');
     });
-});
+};
 
 //Get building by ID
-router.get('/:id', (req, res) => {
+exports.findOne = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: getBuildingById')
         const buildings = JSON.parse(data);
@@ -53,10 +51,10 @@ router.get('/:id', (req, res) => {
         logger.error(`No building found with ID ${req.params.id}`);
         res.status(400).json({msg: `No buildings found with id  ${req.params.id}`});
     });
-});
+};
 
 //Delete building
-router.delete('/:id', (req, res) => {
+exports.delete = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: deleteBuildingById')
         const buildings = JSON.parse(data);
@@ -75,6 +73,4 @@ router.delete('/:id', (req, res) => {
         logger.error(`No building found with ID ${req.params.id} to delete`);
         res.status(400).json({msg: `No buildings found whit id: ${req.params.id}`})
     });
-});
-
-module.exports = router;
+};
