@@ -13,7 +13,7 @@ exports.findAll = (req, res) =>{
     });
 };
 
-// getTechnicianById
+// Get technicians by Attribute
 exports.findOneByAttr = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: getTechniciansByAttr');
@@ -52,16 +52,15 @@ exports.findOneByAttr = (req, res) => {
 //Get technicians by ID
 exports.findOne = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: getBuildingById')
-        const buildings = JSON.parse(data);
-        const found = buildings.some(building => building.id === parseInt(req.params.id));
-
+        logger.info('Endpoint called: getTechniciansById')
+        const technicians = JSON.parse(data);
+        const found = technicians.some(technician => technician.id === parseInt(req.params.id));
         if(found){
-            logger.info(`Returning building with ID equal to ${req.params.id}`);
-            return res.json(buildings.filter(building => building.id === parseInt(req.params.id)));
+            logger.info(`Returning technician with ID equal to ${req.params.id}`);
+            return res.json(technicians.filter(technician => technician.id === parseInt(req.params.id)));
         }
-        logger.error(`No building found with ID ${req.params.id}`);
-        res.status(400).json({msg: `No buildings found with id  ${req.params.id}`});
+        logger.error(`Not technician found with ID ${req.params.id}`);
+        res.status(400).json({msg: `No technicians found with id  ${req.params.id}`});
     });
 };
 

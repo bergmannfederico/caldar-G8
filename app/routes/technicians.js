@@ -4,8 +4,11 @@ const technicians = require('../controllers/technicians.js');
 // Get all technicians
 router.get('/', technicians.findAll);
 
-//Get building by technicians
+//Get technicians by sttribute
 router.get('/attributes', technicians.findOneByAttr);
+
+//Get technicians by ID
+router.get('/:id', technicians.findOne);
 
 
 
