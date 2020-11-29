@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "skillsId": [1,2,3],
+        "description": "homely a",
+        "stock": 20
+    },
+    {
+        "id": 2,
+        "skillsId": [3,5],
+        "description": "homely b",
+        "stock": 18
+    },
+    {
+        "id": 3,
+        "skillsId": [1,2,6],
+        "description": "ecological",
+        "stock": 0
+    },
+    {
+        "id": 4,
+        "skillsId": [1,2],
+        "description": "industrial",
+        "stock": 2
+    }
+]
