@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const boilers = require('../data/boilers.json');
+const boilers = require('../../data/boilers.json');
 
 // Get all boilers
 

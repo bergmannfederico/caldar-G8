@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const technicians = require('../data/technicians.json')
+const technicians = require('../../data/technicians.json')
 const _ = require('underscore')
 const fs = require('fs');
 const dataPath = './data/technicians.json';
