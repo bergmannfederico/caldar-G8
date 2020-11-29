@@ -12,8 +12,60 @@ exports.findAll = (req, res) =>{
         res.send(JSON.parse(data));
     });
 };
-/*
+
 // getTechnicianById
+exports.findOneByAttr = (req, res) => {
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        logger.info('Endpoint called: getTechniciansByAttr');
+        const technicians = JSON.parse(data);
+        if(req.query.first_name){
+            logger.info(`Returning technicians with first name equal to ${req.query.first_name}`);
+            return res.json(technicians.filter(technician => technician.first_name === req.query.first_name));
+        }else if(req.query.last_name){
+            logger.info(`Returning technicians with attribute last_name equal to ${req.query.last_name}`);
+            return res.json(technicians.filter(technician => technician.last_name === req.query.last_name));
+        }else if(req.query.email){
+            logger.info(`Returning technicians with attribute email equal to ${req.query.email}`);
+            return res.json(technicians.filter(technician => technician.email === req.query.email));
+        }else if(req.query.hour_rate){
+            logger.info(`Returning technicians with attribute hour rate equal to ${req.query.hour_rate}`);
+            return res.json(technicians.filter(technician => technician.hour_rate === req.query.hour_rate));
+        }else if(req.query.daily_capacity){
+            logger.info(`Returning technicians with attribute daily capacity equal to ${req.query.daily_capacity}`);
+            return res.json(technicians.filter(technician => technician.daily_capacity === req.query.daily_capacity));
+        }else if(req.query.typeIds){
+            logger.info(`Returning technicians with attribute typeIds equal to ${req.query.typeIds}`);
+            return res.json(technicians.filter(technician =>
+                technician.typeIds.includes(parseInt(req.query.typeIds))));
+        }else if(req.query.skillsId){
+            logger.info(`Returning technicians with attribute skillsId equal to ${req.query.skillsId}`);
+            return res.json(technicians.filter(technician =>
+                technician.skillsId.includes(parseInt(req.query.skillsId))));
+        }else{
+            logger.error(`The attr send on the URL is not compatible with technicians`);
+            res.status(400).json({msg: `Attribute incompatible with technicians`})
+        }
+        return res.json('');
+    });
+};
+
+//Get technicians by ID
+exports.findOne = (req, res) => {
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        logger.info('Endpoint called: getBuildingById')
+        const buildings = JSON.parse(data);
+        const found = buildings.some(building => building.id === parseInt(req.params.id));
+
+        if(found){
+            logger.info(`Returning building with ID equal to ${req.params.id}`);
+            return res.json(buildings.filter(building => building.id === parseInt(req.params.id)));
+        }
+        logger.error(`No building found with ID ${req.params.id}`);
+        res.status(400).json({msg: `No buildings found with id  ${req.params.id}`});
+    });
+};
+
+/*
 router.get('/id/:id', (req, res) => {
     const {id} = req.params;
     _.each(technicians, (technicians, i) => {
@@ -23,83 +75,7 @@ router.get('/id/:id', (req, res) => {
     })
     res.status(400).json({msg: `No technicians found whit id: ${req.params.id}`})
 })
-// getTechniciansByAttribute(first_name)
-router.get('/first_name/:first_name', (req, res) => {
-    const {first_name} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.first_name == first_name){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit first name: ${req.params.first_name}`})
-})
-// getTechniciansByAttribute(last_name)
-router.get('/last_name/:last_name', (req, res) => {
-    const {last_name} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.last_name == last_name){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit last name: ${req.params.last_name}`})
-})
-// getTechniciansByAttribute(email)
-router.get('/email/:email', (req, res) => {
-    const {email} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.email == email){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit email: ${req.params.email}`})
-})
-// getTechniciansByAttribute(typeIds)
-router.get('/typeIds/:typeIds', (req, res) => {
-    const {typeIds} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.typeIds == typeIds){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit typeIds: ${req.params.typeIds}`})
-})
-// getTechniciansByAttribute(skillsId)
-router.get('/skillsId/:skillsId', (req, res) => {
-    const {skillsId} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.skillsId == skillsId){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit skillsId: ${req.params.skillsId}`})
-})
-// getTechniciansByAttribute(hour_rate)
-router.get('/hour_rate/:hour_rate', (req, res) => {
-    const {hour_rate} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.hour_rate == hour_rate){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit hour rate: ${req.params.hour_rate}`})
-})
-// getTechniciansByAttribute(daily_capacity)
-router.get('/daily_capacity/:daily_capacity', (req, res) => {
-    const {daily_capacity} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.daily_capacity == daily_capacity){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit daily capacity: ${req.params.daily_capacity}`})
-})
+
 // deleteTechnicianById
 router.delete('/delete/:id', (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
