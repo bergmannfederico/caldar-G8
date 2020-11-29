@@ -28,5 +28,7 @@
   },
   "bugs": {
     "url": "https://github.com/bergmannfederico/caldar-G8/issues"
-  }
+  },
+  "homepage": "https://github.com/bergmannfederico/caldar-G8#readme",
+  "pre-commit": "lint"
 }
