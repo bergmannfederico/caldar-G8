@@ -10,6 +10,9 @@ router.get('/attributes', technicians.findOneByAttr);
 //Get technicians by ID
 router.get('/:id', technicians.findOne);
 
+//Delete technicians
+router.delete('/:id', technicians.delete);
+
 
 
 

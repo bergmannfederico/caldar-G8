@@ -64,30 +64,25 @@ exports.findOne = (req, res) => {
     });
 };
 
-/*
-router.get('/id/:id', (req, res) => {
-    const {id} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.id == id){
-            res.send(technicians)
-        }
-    })
-    res.status(400).json({msg: `No technicians found whit id: ${req.params.id}`})
-})
-
-// deleteTechnicianById
-router.delete('/delete/:id', (req, res) => {
+//Delete technicians
+exports.delete = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
-        const techs = JSON.parse(data);
-        const found = techs.some(technician => technician.id === parseInt(req.params.id));
+        logger.info('Endpoint called: deleteTechnicianById')
+        const technicians = JSON.parse(data);
+        const found = technicians.some(technician => technician.id === parseInt(req.params.id));
         if(found){
-            const newJson = techs.filter(technician => technician.id !== parseInt(req.params.id));
+            logger.info(`Deleting technician with ID equal to ${req.params.id}`);
+            const newJson = technicians.filter(technician => technician.id !== parseInt(req.params.id));
             fs.writeFile(dataPath, JSON.stringify(newJson), 'utf8', function(err) {
-                if (err)
-                    return res.status(500).json({msg: 'Imposible to re-write the technician'});
+                if (err) {
+                    logger.error(`error trying to write ${dataPath}`);
+                    return res.status(500).json({msg: 'Imposible to re-write technicians'});
+                }
                 return res.json(newJson)
             });
         }
+        logger.error(`No technician found with ID ${req.params.id} to delete`);
+        res.status(400).json({msg: `No technicians found whit id: ${req.params.id}`})
     });
-})
-*/
+};
+
