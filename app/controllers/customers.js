@@ -1,7 +1,7 @@
 const express = require('express');
 //const uuid = require('uuid'); to update and create 
 const router = express.Router();
-const customers = require('../data/customers.json');
+const customers = require('../../data/customers.json');
 
 const idFilter = req => customer => customer.id === parseInt(req.params.id);
 const typeFilter = req => customer => customer.customerType === req.params.customerType;

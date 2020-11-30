@@ -4,11 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node express-server.js",
     "index": "node index.js",
     "dev": "nodemon express-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint"
+=======
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+>>>>>>> 4509a6224007de9b25cfa7c31fdc18d2de94931b
   },
   "keywords": [],
   "author": "",
