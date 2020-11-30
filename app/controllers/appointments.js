@@ -1,105 +1,95 @@
-const express = require('express');
-const router = express.Router();
 const fs = require('fs');
 const dataPath = './data/appointments.json';
+require('slf4n-logging');
+const logger = LoggerFactory.getLogger('Appointments')
 
 
-// API Functions
+// Get all appointments
+exports.findAll = (req, res) =>{
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        logger.info('Endpoint called: getAppointments');
+        res.json(JSON.parse(data));
+    });
+};
 
-const getAllAppointments = () => JSON.parse(fs.readFileSync(dataPath));
+// Get appointments by Attribute
+exports.findOneByAttr = (req, res) =>{
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        logger.info('Endpoint called: getAppointmentByAttr');
+        let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
+        let filterData = appointmentsData; 
+        let flag_filter = false;
+        if(req.query.id){
+            filterData = filterData.filter(appointment => appointment.id === parseInt(req.query.id));
+            flag_filter = true;
+        }
+        if(req.query.buildingId){
+            filterData = filterData.filter(appointment => appointment.buildingId === parseInt(req.query.buildingId));
+            flag_filter = true;
+        }
+        if(req.query.boilerId){
+            filterData = filterData.filter(appointment => appointment.boilerId === parseInt(req.query.boilerId));
+            flag_filter = true;
+        }
+        if(req.query.start_timestamp){
+            filterData = filterData.filter(appointment => appointment.start_timestamp === String(req.query.start_timestamp));
+            flag_filter = true;
+        }
+        if(req.query.end_timestamp){
+            filterData = filterData.filter(appointment => appointment.end_timestamp === String(req.query.end_timestamp));
+            flag_filter = true;
+        }
+        
+        if(flag_filter){
+            logger.info(`Returning appointment successfully`);
+            return res.json(filterData);
+        }else{
+            logger.error(`The attr send on the URL is not compatible with appointment`);
+            return res.status(400).json({msg: `Attribute incompatible with appointment`});
+        }
+    });
+};
 
-const getAppointmentByAttribute = (req) => {
-    let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
-    let filterData = appointmentsData; 
-    let flag_filter = false;
-    if(req.query.id){
-        filterData = filterData.filter(appointment => appointment.id === parseInt(req.query.id));
-        flag_filter = true;
-    }
-    if(req.query.buildingId){
-        filterData = filterData.filter(appointment => appointment.buildingId === parseInt(req.query.buildingId));
-        flag_filter = true;
-    }
-    if(req.query.boilerId){
-        filterData = filterData.filter(appointment => appointment.boilerId === parseInt(req.query.boilerId));
-        flag_filter = true;
-    }
-    if(req.query.start_timestamp){
-        filterData = filterData.filter(appointment => appointment.start_timestamp === String(req.query.start_timestamp));
-        flag_filter = true;
-    }
-    if(req.query.end_timestamp){
-        filterData = filterData.filter(appointment => appointment.end_timestamp === String(req.query.end_timestamp));
-        flag_filter = true;
-    }
 
-    if(flag_filter){
-        return (filterData);
-    }        
-    //res.status(400).json({msg: `Attribute not found`}); 
-}
+// Get appointment by ID
+exports.findOne = (req, res) =>{
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
+        const found = appointmentsData.some(appointment => appointment.id === parseInt(req.params.id));
 
-function getAppointmentById(id){
-    let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
-    const found = appointmentsData.some(appointment => appointment.id === parseInt(id));
-
-    if (found){
-        return appointmentsData.filter(appointment => appointment.id === parseInt(id)); 
-    }
-    //res.status(400).json({msg: `Appointments with ID = ${id} not found`});
-}
-
-function deleteAppointmentById(id){
-    let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
-    const found = appointmentsData.some(appointment => appointment.id === parseInt(id));
-
-    if (found){
-        fs.writeFileSync(dataPath,JSON.stringify(appointmentsData.filter(appointment => appointment.id !== parseInt(id))));
-        return JSON.parse(fs.readFileSync(dataPath));
-    } 
+        logger.info('Endpoint called: getAppointmentById')
     
-    //res.status(400).json({msg: `Appointments with ID = ${id} not found`});
-}
-
-/*function postAppointment(req){
-    const newAppointment = {
-        id: req.body.id,
-        buildingId: req.body.buildingId,
-        boilerId: req.body.boilerId,
-        start_timestamp: req.body.start_timestamp,
-        end_timestamp: req.body.end_timestamp
-    };
-
-    let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
-    appointmentsData.push(newAppointment);
-    fs.writeFileSync(dataPath,JSON.stringify(appointmentsData));
-    return JSON.parse(fs.readFileSync(dataPath));
-
-    //res.status(400).json({msg: `Appointments with ID = ${id} not found`});
-}*/
+        if (found){
+            logger.info(`Returning appointment with ID equal to ${req.params.id}`);
+            return res.json(appointmentsData.filter(appointment => appointment.id === parseInt(req.params.id))); 
+        }else{
+            logger.error(`No appointment found with ID ${req.params.id}`);
+            return res.status(400).json({msg: `No appointment found with ID ${req.params.id}`});
+        }
+    });
+};
 
 
-// Routing
-
-router.get('/', (req, res) =>{
-    res.json(getAllAppointments());
-});
-
-router.get('/attributes', (req, res) => {   
-    res.json(getAppointmentByAttribute(req));
-});
-
-router.get('/:id', (req, res) =>{
-    res.json(getAppointmentById(req.params.id));
-});
-
-router.delete('/:id', (req, res) =>{
-    res.json(deleteAppointmentById(req.params.id));
-});
-
-/*router.post('/', (req, res) =>{
-    res.json(postAppointment(req));
-});*/
-
-
-module.exports = router;
+// Delete appointment by ID
+exports.delete = (req, res) =>{
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        logger.info('Endpoint called: deleteAppointmentById');        
+        let appointmentsData = JSON.parse(fs.readFileSync(dataPath));
+        const found = appointmentsData.some(appointment => appointment.id === parseInt(req.params.id));
+        if (found){
+            logger.info(`Deleting appointment with ID equal to ${req.params.id}`);
+            const newJson = appointmentsData.filter(appointment => appointment.id !== parseInt(req.params.id));
+            fs.writeFile(dataPath, JSON.stringify(newJson), 'utf8', function(err) {
+                if (err) {
+                    logger.error(`error trying to write ${dataPath}`);
+                    return res.status(500).json({msg: 'Imposible to re-write the appointments'});
+                }
+                return res.json(newJson);
+            
+            });
+        }else{
+            logger.error(`No appointment found with ID ${req.params.id} to delete`);
+            return res.status(400).json({msg: `No appointments found whit id: ${req.params.id}`});            
+        }
+    });
+};

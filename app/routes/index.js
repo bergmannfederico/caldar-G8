@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const buildingsRouter = require('./buildings');
+const appointmentsRouter = require('./appointments');
 
 
 // Building API Routes
@@ -12,7 +13,7 @@ router.use('/technicians', require('../controllers/technicians'));
 router.use('/customers', require('../controllers/customers'));
 
 // Appointments API Routes
-router.use('/appointments', require('../controllers/appointments'));
+router.use('/appointments', appointmentsRouter);
 
 // Boilers-data API routes
 router.use('/boilers-data', require('../controllers/boilers-data'));
