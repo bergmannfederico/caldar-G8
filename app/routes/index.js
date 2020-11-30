@@ -2,6 +2,7 @@ const router = require('express').Router();
 const buildingsRouter = require('./buildings');
 
 
+
 // Building API Routes
 router.use('/buildings', buildingsRouter);
 
