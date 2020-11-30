@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const buildingsRouter = require('./buildings');
-
+const boilersRouter = require('./boilers');
+const boilersDataRouter = require('./boilers-data');
 
 
 // Building API Routes
@@ -16,9 +17,9 @@ router.use('/customers', require('../controllers/customers'));
 router.use('/appointments', require('../controllers/appointments'));
 
 // Boilers-data API routes
-router.use('/boilers-data', require('../controllers/boilers-data'));
+router.use('/boilers-data', boilersDataRouter);
 
 // Boilers API routes
-router.use('/boilers', require('../controllers/boilers'));
+router.use('/boilers', boilersRouter);
 
 module.exports = router;

@@ -1,19 +1,19 @@
 const router = require('express').Router();
 const boilers = require('../controllers/boilers.js');
 
-// Get all buildings
-router.get('/boilers', boilers.findAll);
+// Get all boiler
+router.get('/', boilers.findAll);
 
-//Get building by Attribute: skillsId
-router.get('/skillsId', boilers.findOneBySkillsId);
+//Get boiler by Attribute: skillsId
+router.get('/skillsId/:skillsId', boilers.findOneBySkillsId);
 
-//Get building by Attribute: description
+//Get boiler by Attribute: description
 router.get('/description', boilers.findOneByDescription);
 
-//Get building by ID
-router.get('/:id', boilers.findOneById);
+//Get boiler by ID
+router.get('/id/:id', boilers.findOneById);
 
-//Delete building
-router.delete('/:id', boilers.delete);
+//Delete boiler by id
+router.delete('/id/:id', boilers.delete);
 
 module.exports = router;

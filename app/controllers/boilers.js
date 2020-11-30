@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const boilers = require('../../data/boilers.json');
 
 // Get all boilers
@@ -59,4 +57,3 @@ exports.delete = (require, response) => {
     }
   };
   
-module.exports = router;
