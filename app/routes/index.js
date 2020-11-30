@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const buildingsRouter = require('./buildings');
+const customersRouter = require('./customers');
 
 
 // Building API Routes
 router.use('/buildings', buildingsRouter);
+router.use('/customers', customersRouter);
 
 // Technicians API Routes
 router.use('/technicians', require('../controllers/technicians'));
