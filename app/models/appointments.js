@@ -1,6 +1,6 @@
 module.exports = mongoose => {
     const appointments = mongoose.model(
-        "appointments",
+        "appointment",
         mongoose.Schema(
            {    // These fields were added as an example. Replace them with the right ones.
                 id: {

@@ -10,6 +10,9 @@ router.get('/attributes', appointments.findOneByAttr);
 //Get appointments by ID
 router.get('/:id', appointments.findOne);
 
+//Create appointments
+router.post('/', appointments.create);
+
 //Delete appointments
 router.delete('/:id', appointments.delete);
 
