@@ -1,10 +1,5 @@
-//const technicians = require('../../data/technicians.json');
-//const _ = require('underscore');
-const fs = require('fs');
-const dataPath = './data/technicians.json';
 require('slf4n-logging');
 const logger = LoggerFactory.getLogger('Technicians')
-
 const db = require('../models');
 const Technicians = db.technicians;
 
@@ -22,8 +17,8 @@ exports.findAll = (req, res) =>{
         })
 };
 
+//Get technicians by Attribute
 
-// Get technicians by Attribute
 exports.findOneByAttr = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: getTechniciansByAttr');
@@ -59,6 +54,7 @@ exports.findOneByAttr = (req, res) => {
     });
 };
 
+
 //Get technicians by ID
 exports.findOne = (req, res) =>{
     Technicians.findOne({id: req.params.id})
@@ -84,7 +80,7 @@ exports.create = (req, res) => {
         return res.status(400).send({message: 'Specify all attributes to create a new technician'});
     }
 
-    // Create the technician object
+    // Create technician object
     const technician = new Technicians({
         id: req.body.id,
         first_name: req.body.first_name,
@@ -109,7 +105,8 @@ exports.create = (req, res) => {
         });
 };
 
-//Delete technicians
+//Delete technicians}
+
 exports.delete = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {
         logger.info('Endpoint called: deleteTechnicianById')
@@ -131,3 +128,29 @@ exports.delete = (req, res) => {
     });
 };
 
+//Update technician by ID
+exports.update = (req, res) => {
+    logger.info('Endpoint called: updateTechnician')
+    if(!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.typeIds || !req.body.skillsId || !req.body.hour_rate || !req.body.daily_capacity || !req.body.id){
+        return res.status(400).send({message: 'Specify all attributes to update a technician'});
+    }
+
+    const id = req.params.id;
+
+    Technicians.findOneAndUpdate({id}, req.body, { useFindAndModify: true })
+        .then(data => {
+            if(!data){
+                logger.error(`No technicians found with ID ${req.params.id}`);
+                return res.status(404).send({
+                    message: `No technicians found with id  ${req.params.id}`
+                });
+            }
+            logger.info(`Updating technicians with ID equal to ${req.params.id}`);
+            res.send({ message: 'technicians updated' });
+        })
+        .catch(() => {
+            res.status(500).send({
+                message: 'Error occurred while updating technicians'
+            });
+        });
+};
