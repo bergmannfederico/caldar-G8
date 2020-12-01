@@ -5,13 +5,23 @@ const dataPath = './data/technicians.json';
 require('slf4n-logging');
 const logger = LoggerFactory.getLogger('Technicians')
 
+const db = require('../models');
+const Technicians = db.technicians;
+
 // Get all technicians
 exports.findAll = (req, res) =>{
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: getAllTechnicians')
-        res.send(JSON.parse(data));
-    });
+    Technicians.find({})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || `An error ocurred trying to get all technicians`
+            })
+        })
 };
+
 
 // Get technicians by Attribute
 exports.findOneByAttr = (req, res) => {
@@ -50,18 +60,21 @@ exports.findOneByAttr = (req, res) => {
 };
 
 //Get technicians by ID
-exports.findOne = (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: getTechniciansById')
-        const technicians = JSON.parse(data);
-        const found = technicians.some(technician => technician.id === parseInt(req.params.id));
-        if(found){
-            logger.info(`Returning technician with ID equal to ${req.params.id}`);
-            return res.json(technicians.filter(technician => technician.id === parseInt(req.params.id)));
-        }
-        logger.error(`Not technician found with ID ${req.params.id}`);
-        res.status(400).json({msg: `No technicians found with id  ${req.params.id}`});
-    });
+exports.findOne = (req, res) =>{
+    Technicians.findOne({id: req.params.id})
+        .then(data => {
+            if(!data) {
+                return res.status(404).send({
+                    message: `Technician with id ${req.params.id} was not found`
+                });
+            }
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || `An error ocurred trying to get technician with id ${req.params.id} `
+            })
+        })
 };
 
 //Delete technicians
