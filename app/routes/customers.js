@@ -1,5 +1,5 @@
-const router = require('express').Router();
 const customer = require('../controllers/customers.js');
+const router = require('express').Router();
 
 // Retrieve all customers
 router.get('/', customer.findAll);

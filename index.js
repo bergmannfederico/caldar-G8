@@ -1,14 +1,15 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
-const port = 5000;
-const router = require('./app/routes');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const port = 3000;
 const db = require('./app/models');
+const router = require('./app/routes');
+
 
 // Settings
 app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 2);
 app.use(cors());
@@ -33,3 +34,4 @@ app.use(express.static('public'));
 app.listen(port, () => {
     console.log(`Server started on port: ${port}`);
 })
+module.exports = router;

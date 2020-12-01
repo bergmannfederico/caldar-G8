@@ -17,6 +17,7 @@
         "express": "^4.17.1",
         "mongodb": "^3.6.3",
         "mongoose": "^5.10.18",
+        "mongoose-timestamp": "^0.6.0",
         "slf4n-logging": "^1.0.0",
         "underscore": "^1.11.0"
     },

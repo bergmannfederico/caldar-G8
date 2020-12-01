@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
-const timestamp = require('mongoose-timestamp');
+module.exports = mongoose => {
 
-const customerSchema = new mongoose.Schema({
-    id: Number,
-    customerType: String,
-    email: String,
-    buildings: [],
-    fiscalAddress: String,
-});
-
-customerSchema.plugin(timestamp);
-
-const customer = mongoose.model('customer', customerSchema);
-module.exports = customer;
+    const Customer = mongoose.model(
+        "customer",
+        mongoose.Schema({
+            id: Number,
+            customerType: String,
+            email: String,
+            buildings: [],
+            fiscalAddress: String,
+        }, {
+            timestamps: true
+        }))
+    return Customer
+};
