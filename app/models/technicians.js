@@ -5,36 +5,27 @@ module.exports = mongoose => {
            {    
                 id:{
                     type: Number,
-                    required: true,
-                    unique: true
                 },
                 first_name:{
                     type: String,
-                    required: true,
                 },
                 last_name:{
                     type: String,
-                    required: true,
                 },
                 email:{
                     type: String,
-                    required: true,
                 },
                 typeIds:{
                     type: [],
-                    required: true,
                 },
                 skillsId:{
                     type: [],
-                    required: true,
                 },   
                 hour_rate:{
                     type: String,
-                    required: true,
                 },  
                 daily_capacity:{
                     type: Number,
-                    required: true,
                 },            
             },
         )

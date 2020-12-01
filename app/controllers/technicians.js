@@ -18,42 +18,33 @@ exports.findAll = (req, res) =>{
 };
 
 //Get technicians by Attribute
-
-exports.findOneByAttr = (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: getTechniciansByAttr');
-        const technicians = JSON.parse(data);
-        if(req.query.first_name){
-            logger.info(`Returning technicians with first name equal to ${req.query.first_name}`);
-            return res.json(technicians.filter(technician => technician.first_name === req.query.first_name));
-        }else if(req.query.last_name){
-            logger.info(`Returning technicians with attribute last_name equal to ${req.query.last_name}`);
-            return res.json(technicians.filter(technician => technician.last_name === req.query.last_name));
-        }else if(req.query.email){
-            logger.info(`Returning technicians with attribute email equal to ${req.query.email}`);
-            return res.json(technicians.filter(technician => technician.email === req.query.email));
-        }else if(req.query.hour_rate){
-            logger.info(`Returning technicians with attribute hour rate equal to ${req.query.hour_rate}`);
-            return res.json(technicians.filter(technician => technician.hour_rate === req.query.hour_rate));
-        }else if(req.query.daily_capacity){
-            logger.info(`Returning technicians with attribute daily capacity equal to ${req.query.daily_capacity}`);
-            return res.json(technicians.filter(technician => technician.daily_capacity === req.query.daily_capacity));
-        }else if(req.query.typeIds){
-            logger.info(`Returning technicians with attribute typeIds equal to ${req.query.typeIds}`);
-            return res.json(technicians.filter(technician =>
-                technician.typeIds.includes(parseInt(req.query.typeIds))));
-        }else if(req.query.skillsId){
-            logger.info(`Returning technicians with attribute skillsId equal to ${req.query.skillsId}`);
-            return res.json(technicians.filter(technician =>
-                technician.skillsId.includes(parseInt(req.query.skillsId))));
-        }else{
-            logger.error(`The attr send on the URL is not compatible with technicians`);
-            res.status(400).json({msg: `Attribute incompatible with technicians`})
-        }
-        return res.json('');
-    });
+exports.findByAttr = (req, res) => {
+    if(!(req.query.first_name || req.query.last_name || req.query.email || req.query.typeIds || req.query.skillsId || req.query.hour_rate || req.query.daily_capacity)){
+        logger.error(`The attr send on the URL is not compatible with technicians`);
+        return res.status(400).json({msg: `Attribute incompatible with technicians`})
+    }
+    if(req.query.typeIds){
+        req.query.typeIds = parseInt(req.query.typeIds);
+    }
+    if(req.query.skillsId){
+        req.query.skillsId = parseInt(req.query.skillsId);
+    }
+    logger.info('Endpoint called: getAllTechnicians')
+    Technicians.find(req.query)
+        .then(data => {
+            if(!data){
+                return res.send('');
+            }
+            logger.info(`Returning technician with attr equal to ${req.params.id}`);
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while retrieving technicians'
+            });
+        });
 };
-
 
 //Get technicians by ID
 exports.findOne = (req, res) =>{

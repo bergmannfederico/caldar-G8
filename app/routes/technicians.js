@@ -4,8 +4,8 @@ const technicians = require('../controllers/technicians.js');
 // Get all technicians
 router.get('/', technicians.findAll);
 
-//Get technicians by attribute
-router.get('/attributes', technicians.findOneByAttr);
+//Get technicians by Attribute
+router.get('/attributes', technicians.findByAttr);
 
 //Create a new technicians
 router.post('/', technicians.create);
