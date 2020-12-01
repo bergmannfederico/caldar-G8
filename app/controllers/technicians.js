@@ -105,27 +105,19 @@ exports.create = (req, res) => {
         });
 };
 
-//Delete technicians}
-
+//Delete technicians
 exports.delete = (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: deleteTechnicianById')
-        const technicians = JSON.parse(data);
-        const found = technicians.some(technician => technician.id === parseInt(req.params.id));
-        if(found){
-            logger.info(`Deleting technician with ID equal to ${req.params.id}`);
-            const newJson = technicians.filter(technician => technician.id !== parseInt(req.params.id));
-            fs.writeFile(dataPath, JSON.stringify(newJson), 'utf8', function(err) {
-                if (err) {
-                    logger.error(`error trying to write ${dataPath}`);
-                    return res.status(500).json({msg: 'Imposible to re-write technicians'});
-                }
-                return res.json(newJson)
-            });
-        }
-        logger.error(`No technician found with ID ${req.params.id} to delete`);
-        res.status(400).json({msg: `No technicians found whit id: ${req.params.id}`})
-    });
+    logger.info('Endpoint called: deleteTechnicianById');
+    const id = req.params.id;
+    Technicians.findOneAndDelete({id}, {useFindAndModify: false})
+        .then(() => {
+            logger.info(`Deleting s with ID equal to ${req.params.id}`);
+            res.send({message: 'Technician removed'})
+        })
+        .catch(() => {
+            logger.error(`Error trying to delete technician with ID=` + id);
+            return res.status(500).json({message: 'Error trying to delete technician with ID=' + id});
+        });
 };
 
 //Update technician by ID
@@ -154,3 +146,6 @@ exports.update = (req, res) => {
             });
         });
 };
+
+
+
