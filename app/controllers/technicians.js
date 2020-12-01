@@ -77,6 +77,38 @@ exports.findOne = (req, res) =>{
         })
 };
 
+//Create a new technician
+exports.create = (req, res) => {
+    logger.info('Endpoint called: createTechnician');
+    if(!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.typeIds || !req.body.skillsId || !req.body.hour_rate || !req.body.daily_capacity || !req.body.id){
+        return res.status(400).send({message: 'Specify all attributes to create a new technician'});
+    }
+
+    // Create the technician object
+    const technician = new Technicians({
+        id: req.body.id,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        typeIds: req.body.typeIds,
+        skillsId: req.body.skillsId,
+        hour_rate: req.body.hour_rate,
+        daily_capacity: req.body.daily_capacity
+    });
+
+    technician.save(technician)
+        .then(data => {
+            logger.info(`Creating technician with ID  ${req.body.id}`);
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while creating technicians'
+            });
+        });
+};
+
 //Delete technicians
 exports.delete = (req, res) => {
     fs.readFile(dataPath, 'utf8', (err, data) => {

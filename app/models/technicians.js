@@ -21,15 +21,15 @@ module.exports = mongoose => {
                     required: true,
                 },
                 typeIds:{
-                    type: Array,
+                    type: [],
                     required: true,
                 },
                 skillsId:{
-                    type: Array,
+                    type: [],
                     required: true,
                 },   
                 hour_rate:{
-                    type: Number,
+                    type: String,
                     required: true,
                 },  
                 daily_capacity:{

@@ -7,6 +7,9 @@ router.get('/', technicians.findAll);
 //Get technicians by sttribute
 router.get('/attributes', technicians.findOneByAttr);
 
+//Create a new technicians
+router.post('/', technicians.create);
+
 //Get technicians by ID
 router.get('/:id', technicians.findOne);
 
