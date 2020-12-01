@@ -5,7 +5,7 @@ const appointments = require('../controllers/appointments.js');
 router.get('/', appointments.findAll);
 
 //Get appointments by Attribute
-router.get('/attributes', appointments.findOneByAttr);
+//router.get('/attributes', appointments.findOneByAttr);
 
 //Get appointments by ID
 router.get('/:id', appointments.findOne);
