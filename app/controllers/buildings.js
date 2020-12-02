@@ -48,7 +48,7 @@ exports.findByAttr = (req, res) => {
 //Get building by ID
 exports.findOne = (req, res) => {
     logger.info('Endpoint called: getBuildingById')
-    Building.find({id: req.params.id})
+    Building.findOne({id: req.params.id})
         .then(data => {
             if(!data){
                 logger.error(`No building found with ID ${req.params.id}`);
