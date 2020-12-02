@@ -1,76 +1,139 @@
-const fs = require('fs');
-const dataPath = './data/buildings.json';
+const db = require('../models');
+const Building = db.building;
 require('slf4n-logging');
 const logger = LoggerFactory.getLogger('Buildings')
 
 // Get all buildings
 exports.findAll = (req, res) =>{
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: getAllBuildings')
-        res.send(JSON.parse(data));
-    });
+    logger.info('Endpoint called: getAllBuildings')
+    Building.find({})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            logger.error(err.message);
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while retrieving buildings'
+            });
+        });
 };
 
 //Get building by Attribute
-exports.findOneByAttr = (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: getBuildingByAttr');
-        const buildings = JSON.parse(data);
-        if(req.query.address){
-            logger.info(`Returning buildings with attribute address equal to ${req.query.address}`);
-            return res.json(buildings.filter(building => building.address === req.query.address));
-        }else if(req.query.full_name){
-            logger.info(`Returning buildings with attribute full name equal to ${req.query.full_name}`);
-            return res.json(buildings.filter(building => building.full_name === req.query.full_name));
-        }else if(req.query.phone){
-            logger.info(`Returning buildings with attribute phone equal to ${req.query.phone}`);
-            return res.json(buildings.filter(building => building.phone === req.query.phone));
-        }else if(req.query.boiler_id){
-            logger.info(`Returning buildings with attribute boiler_id equal to ${req.query.boiler_id}`);
-            return res.json(buildings.filter(building =>
-                building.boiler_id.includes(parseInt(req.query.boiler_id))));
-        }else{
-            logger.error(`The attr send on the URL is not compatible with buildings`);
-            res.status(400).json({msg: `Attribute incompatible with buildings`})
-        }
-        return res.json('');
-    });
+exports.findByAttr = (req, res) => {
+    if(!(req.query.address || req.query.fullName || req.query.phone || req.query.boilerId)){
+        logger.error(`The attr send on the URL is not compatible with buildings`);
+        return res.status(400).json({msg: `Attribute incompatible with buildings`})
+    }
+    if(req.query.boilerId){
+        req.query.boilerId = parseInt(req.query.boilerId);
+    }
+    logger.info('Endpoint called: getAllBuildings')
+    Building.find(req.query)
+        .then(data => {
+            if(!data){
+                return res.send('');
+            }
+            logger.info(`Returning building with attr equal to ${req.params.id}`);
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while retrieving buildings'
+            });
+        });
 };
 
 //Get building by ID
 exports.findOne = (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: getBuildingById')
-        const buildings = JSON.parse(data);
-        const found = buildings.some(building => building.id === parseInt(req.params.id));
-
-        if(found){
+    logger.info('Endpoint called: getBuildingById')
+    Building.findOne({id: req.params.id})
+        .then(data => {
+            if(!data){
+                logger.error(`No building found with ID ${req.params.id}`);
+                return res.status(404).send({
+                    message: `No buildings found with id  ${req.params.id}`
+                });
+            }
             logger.info(`Returning building with ID equal to ${req.params.id}`);
-            return res.json(buildings.filter(building => building.id === parseInt(req.params.id)));
-        }
-        logger.error(`No building found with ID ${req.params.id}`);
-        res.status(400).json({msg: `No buildings found with id  ${req.params.id}`});
-    });
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while retrieving buildings'
+            });
+        });
 };
 
 //Delete building
 exports.delete = (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        logger.info('Endpoint called: deleteBuildingById')
-        const buildings = JSON.parse(data);
-        const found = buildings.some(building => building.id === parseInt(req.params.id));
-        if(found){
+    logger.info('Endpoint called: deleteBuildingById');
+    const id = req.params.id;
+    Building.findOneAndDelete({id}, {useFindAndModify: false})
+        .then(() => {
             logger.info(`Deleting building with ID equal to ${req.params.id}`);
-            const newJson = buildings.filter(building => building.id !== parseInt(req.params.id));
-            fs.writeFile(dataPath, JSON.stringify(newJson), 'utf8', function(err) {
-                if (err) {
-                    logger.error(`error trying to write ${dataPath}`);
-                    return res.status(500).json({msg: 'Imposible to re-write the buildings'});
-                }
-                return res.json(newJson)
-            });
-        }
-        logger.error(`No building found with ID ${req.params.id} to delete`);
-        res.status(400).json({msg: `No buildings found whit id: ${req.params.id}`})
+            res.send({message: 'Building removed'})
+        })
+        .catch(() => {
+            logger.error(`Error trying to delete building with ID=` + id);
+            return res.status(500).json({message: 'Error trying to delete building with ID=' + id});
+        });
+};
+
+//Create a new building
+exports.create = (req, res) => {
+    logger.info('Endpoint called: createBuilding');
+    if(!req.body.address || !req.body.fullName || !req.body.phone || !req.body.boilerId || !req.body.id){
+        return res.status(400).send({message: 'Specify all attributes to create a new building'});
+    }
+
+    // Create the building object
+    const building = new Building({
+        id: req.body.id,
+        fullName: req.body.fullName,
+        address: req.body.address,
+        phone: req.body.phone,
+        boilerId: req.body.boilerId
     });
+
+    building.save(building)
+        .then(data => {
+            logger.info(`Creating building with ID  ${req.body.id}`);
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while creating buildings'
+            });
+        });
+};
+
+//Update building by ID
+exports.update = (req, res) => {
+    logger.info('Endpoint called: updateBuilding')
+    if(!req.body.address || !req.body.fullName || !req.body.phone || !req.body.boilerId || !req.body.id){
+        return res.status(400).send({message: 'Specify all attributes to update a building'});
+    }
+
+    const id = req.params.id;
+
+    Building.findOneAndUpdate({id}, req.body, { useFindAndModify: true })
+        .then(data => {
+            if(!data){
+                logger.error(`No building found with ID ${req.params.id}`);
+                return res.status(404).send({
+                    message: `No buildings found with id  ${req.params.id}`
+                });
+            }
+            logger.info(`Updating building with ID equal to ${req.params.id}`);
+            res.send({ message: 'Building updated' });
+        })
+        .catch(() => {
+            res.status(500).send({
+                message: 'Error occurred while updating buildings'
+            });
+        });
 };
