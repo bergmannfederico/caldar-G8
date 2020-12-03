@@ -5,8 +5,6 @@ const cors = require('cors');
 const port = 3000;
 const db = require('./app/models');
 const router = require('./app/routes');
-const bodyParser = require('body-parser');
-const db = require('./app/models');
 
 // Settings
 app.use(express.urlencoded({ extended: false }));
