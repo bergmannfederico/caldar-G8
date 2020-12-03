@@ -4,7 +4,7 @@ const Customer = db.customer;
 //Create and Save a new Customer
 exports.create = (req, res) => {
     //Validate request
-    if (!req.body.customerType || !req.body.email || !req.body.buildings || !req.body.fiscalAddress) {
+    if (!req.body.customerType || !req.body.email || !req.body.buildings || !req.body.fiscal_address) {
         res.status(400).send({
             msg: "Content cannot be empty!"
         });
@@ -17,18 +17,18 @@ exports.create = (req, res) => {
         customerType: req.body.customerType,
         email: req.body.email,
         building: req.body.buildings,
-        fiscalAddress: req.body.fiscalAddress,
+        fiscal_address: req.body.fiscal_address,
     });
 
     //Save Customer in the database
     customer
         .save(customer)
         .then(data => {
-            res.send(data)
+            res.send(data);
         })
-        .cath(err => {
+        .catch(err => {
             res.status(500).send({
-                msg: err.message || "Some error occurred while creating the Customer"
+                msg: err.message || "Some error occurred while creating the Customer."
             });
         });
 };
@@ -39,7 +39,7 @@ exports.findAll = (req, res) => {
         .then(data => {
             res.send(data);
         })
-        .catcher(err => {
+        .catch(err => {
             res.status(500).send({
                 msg: err.message || "Some error occurred while retrieving Customers"
             });
@@ -47,8 +47,8 @@ exports.findAll = (req, res) => {
 };
 
 //Find a Customer by ID
-exports.FindOne = (req, res) => {
-    Customer.FindOne({ id: req.params.id })
+exports.findOne = (req, res) => {
+    Customer.findOne({ id: req.params.id })
         .then(data => {
             if (!data) {
                 return res.status(404).send({
@@ -57,12 +57,12 @@ exports.FindOne = (req, res) => {
             }
             res.send(data)
         })
-        .catcher(err => {
+        .catch(err => {
             res.status(500).send({
-                msg: err.message || "Some error occurred while retrieving building."
+                msg: err.message || "Some error occurred while retrieving customer."
             });
         });
-}
+};
 
 //Update a Customer by ID
 exports.update = (req, res) => {
@@ -73,7 +73,7 @@ exports.update = (req, res) => {
     }
 
     //Validate request
-    if (!req.body.customerType || !req.body.email || !req.body.buildings || !req.body.fiscalAddress) {
+    if (!req.body.customerType || !req.body.email || !req.body.buildings || !req.body.fiscal_address) {
         res.status(400).send({
             msg: "Content cannot be empty!"
         });
@@ -81,7 +81,7 @@ exports.update = (req, res) => {
     }
     const id = req.params.id;
 
-    Customer.findOneandUpdate({ id }, req.body, { useFindAndModify: false })
+    Customer.findOneAndUpdate({ id }, req.body, { useFindAndModify: true })
         .then(data => {
             if (!data) {
                 return res.status(404).send({
@@ -89,43 +89,98 @@ exports.update = (req, res) => {
                 });
             } else res.send({ msg: "Customer was updated successfully." });
         })
-        .catcher(err => {
+        .catch(err => {
             res.status(500).send({ msg: "Error updating Customer with id=" + id });
         });
 };
 
 //Delete a Customer by ID
 exports.delete = (req, res) => {
-    const id = rq.params.id;
+    const id = req.params.id;
     Customer.findOneAndRemove({ id }, { useFindAndModify: false })
         .then(data =>
             res.send({ message: "Customer was removed successfully." })
         )
-        .catcher(err => {
+        .catch(err => {
             res.status(500).send({ msg: "Error removing Customer with id=" + id });
         });
 };
 
 //Retrieve Customer by Attibute
-//Retrieve Customers by Customer Type 
 
-exports.FindAll = (req, res) => {
-    Customer.FindAll({ id: req.params.customerType })
+//Retrieve Customers by Customer Type 
+exports.findOneByAttr = (req, res) => {
+    Customer.find({ customerType: req.params.customerType })
         .then(data => {
             if (!data) {
                 return res.status(404).send({
-                    msg: `Customer with id ${req.params.customerType} was not found.`
+                    msg: `Customers with ${req.params.customerType} were not found.`
                 })
             }
             res.send(data)
         })
-        .catcher(err => {
+        .catch(err => {
             res.status(500).send({
-                msg: err.message || "Some error occurred while retrieving building."
+                msg: err.message || "Some error occurred while retrieving customers."
             });
         });
-}
+};
 
-//Retrieve Custome by Email
+//Retrieve Customer by Email
+exports.findOneByAttr = (req, res) => {
+    Customer.find({ email: req.params.email })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with ${req.params.email} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
 
-//Retrieve Custome by Email
+//Retrieve Customer By Fiscal Address
+exports.findOneByAttr = (req, res) => {
+    Customer.find({ fiscal_address: req.params.fiscal_address })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with ${req.params.fiscal_address} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
+
+//Retrieve Customer By Building
+exports.findByAttr = (req, res) => {
+    Customer.find({
+        buildings: parseInt(req.params.building)
+
+    })
+
+    .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with ${req.params.buildings} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
