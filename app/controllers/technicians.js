@@ -1,114 +1,132 @@
-const { Router } = require('express');
-const router = Router();
-const technicians = require('../../data/technicians.json')
-const _ = require('underscore')
-const fs = require('fs');
-const dataPath = './data/technicians.json';
-//Routes
-// getTechniciansAll
-router.get('/', (req, res) => {
-    res.json(technicians);
-})
-// getTechnicianById
-router.get('/id/:id', (req, res) => {
-    const {id} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.id == id){
-            res.send(technicians)
-        }
-    })
-    res.status(400).json({msg: `No technicians found whit id: ${req.params.id}`})
-})
-// getTechniciansByAttribute(first_name)
-router.get('/first_name/:first_name', (req, res) => {
-    const {first_name} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.first_name == first_name){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit first name: ${req.params.first_name}`})
-})
-// getTechniciansByAttribute(last_name)
-router.get('/last_name/:last_name', (req, res) => {
-    const {last_name} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.last_name == last_name){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit last name: ${req.params.last_name}`})
-})
-// getTechniciansByAttribute(email)
-router.get('/email/:email', (req, res) => {
-    const {email} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.email == email){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit email: ${req.params.email}`})
-})
-// getTechniciansByAttribute(typeIds)
-router.get('/typeIds/:typeIds', (req, res) => {
-    const {typeIds} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.typeIds == typeIds){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit typeIds: ${req.params.typeIds}`})
-})
-// getTechniciansByAttribute(skillsId)
-router.get('/skillsId/:skillsId', (req, res) => {
-    const {skillsId} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.skillsId == skillsId){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit skillsId: ${req.params.skillsId}`})
-})
-// getTechniciansByAttribute(hour_rate)
-router.get('/hour_rate/:hour_rate', (req, res) => {
-    const {hour_rate} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.hour_rate == hour_rate){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit hour rate: ${req.params.hour_rate}`})
-})
-// getTechniciansByAttribute(daily_capacity)
-router.get('/daily_capacity/:daily_capacity', (req, res) => {
-    const {daily_capacity} = req.params;
-    _.each(technicians, (technicians, i) => {
-        if (technicians.daily_capacity == daily_capacity){
-            res.send(technicians)
-        }
-        
-    })
-    res.status(400).json({msg: `No technicians found whit daily capacity: ${req.params.daily_capacity}`})
-})
-// deleteTechnicianById
-router.delete('/delete/:id', (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        const techs = JSON.parse(data);
-        const found = techs.some(technician => technician.id === parseInt(req.params.id));
-        if(found){
-            const newJson = techs.filter(technician => technician.id !== parseInt(req.params.id));
-            fs.writeFile(dataPath, JSON.stringify(newJson), 'utf8', function(err) {
-                if (err)
-                    return res.status(500).json({msg: 'Imposible to re-write the technician'});
-                return res.json(newJson)
+require('slf4n-logging');
+const logger = LoggerFactory.getLogger('Technicians');
+const db = require('../models');
+const Technicians = db.technicians;
+
+// Get all technicians
+exports.findAll = (req, res) =>{
+    Technicians.find({})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || `An error ocurred trying to get all technicians`
+            })
+        })
+};
+//Get technicians by Attribute
+exports.findByAttr = (req, res) => {
+    if(!(req.query.first_name || req.query.last_name || req.query.email || req.query.typeIds || req.query.skillsId || req.query.hour_rate || req.query.daily_capacity)){
+        logger.error(`The attribute send on the URL is not compatible with technicians`);
+        return res.status(400).json({msg: `The attribute is incompatible with technicians`})
+    }
+    if(req.query.typeIds){
+        req.query.typeIds = parseInt(req.query.typeIds);
+    }
+    if(req.query.skillsId){
+        req.query.skillsId = parseInt(req.query.skillsId);
+    }
+    logger.info('Endpoint called: getAllTechnicians')
+    Technicians.find(req.query)
+        .then(data => {
+            if(!data){
+                return res.send('');
+            }
+            logger.info(`Returning technician with attr equal to ${req.params.id}`);
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while retrieving technicians'
             });
-        }
+        });
+};
+//Get technicians by ID
+exports.findOne = (req, res) =>{
+    Technicians.findOne({id: req.params.id})
+        .then(data => {
+            if(!data) {
+                return res.status(404).send({
+                    message: `Technician with id ${req.params.id} was not found`
+                });
+            }
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || `An error ocurred trying to get technician with id ${req.params.id} `
+            })
+        })
+};
+//Create a new technician
+exports.create = (req, res) => {
+    logger.info('Endpoint called: createTechnician');
+    if(!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.typeIds || !req.body.skillsId || !req.body.hour_rate || !req.body.daily_capacity || !req.body.id){
+        return res.status(400).send({message: 'Specify all attributes to create a new technician'});
+    }
+    // Create new technician object
+    const technician = new Technicians({
+        id: req.body.id,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        typeIds: req.body.typeIds,
+        skillsId: req.body.skillsId,
+        hour_rate: req.body.hour_rate,
+        daily_capacity: req.body.daily_capacity
     });
-})
-module.exports = router;
+    technician.save(technician)
+        .then(data => {
+            logger.info(`Creating technician with ID  ${req.body.id}`);
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while creating technicians'
+            });
+        });
+};
+//Update technician by ID
+exports.update = (req, res) => {
+    logger.info('Endpoint called: updateTechnician')
+    if(!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.typeIds || !req.body.skillsId || !req.body.hour_rate || !req.body.daily_capacity || !req.body.id){
+        return res.status(400).send({message: 'Specify all attributes to update a technician'});
+    }
+    const id = req.params.id;
+    Technicians.findOneAndUpdate({id}, req.body, { useFindAndModify: true })
+        .then(data => {
+            if(!data){
+                logger.error(`No technicians found with ID ${req.params.id}`);
+                return res.status(404).send({
+                    message: `No technicians found with id  ${req.params.id}`
+                });
+            }
+            logger.info(`Updating technicians with ID equal to ${req.params.id}`);
+            res.send({ message: 'technicians updated' });
+        })
+        .catch(() => {
+            res.status(500).send({
+                message: 'Error occurred while updating technicians'
+            });
+        });
+};
+//Delete technicians
+exports.delete = (req, res) => {
+    logger.info('Endpoint called: deleteTechnicianById');
+    const id = req.params.id;
+    Technicians.findOneAndDelete({id}, {useFindAndModify: false})
+        .then(() => {
+            logger.info(`Deleting s with ID equal to ${req.params.id}`);
+            res.send({message: 'Technician removed'})
+        })
+        .catch(() => {
+            logger.error(`Error trying to delete technician with ID=` + id);
+            return res.status(500).json({message: 'Error trying to delete technician with ID=' + id});
+        });
+};
+
+
