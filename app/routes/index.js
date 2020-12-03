@@ -6,13 +6,13 @@ const techniciansRouter = require('./technicians');
 
 // Building API Routes
 router.use('/buildings', buildingsRouter);
-router.use('/customers', customersRouter);
+
 
 // Technicians API Routes
 router.use('/technicians', techniciansRouter);
 
 // Customers API Routes
-router.use('/customers', require('../controllers/customers'));
+router.use('/customers', customersRouter);
 
 // Appointments API Routes
 router.use('/appointments', require('../controllers/appointments'));

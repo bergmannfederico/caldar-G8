@@ -7,7 +7,7 @@ module.exports = mongoose => {
             customerType: String,
             email: String,
             buildings: [],
-            fiscalAddress: String,
+            fiscal_address: String,
         }, {
             timestamps: true
         }))

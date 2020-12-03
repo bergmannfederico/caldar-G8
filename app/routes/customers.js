@@ -13,10 +13,16 @@ router.get('/:id', customer.findOne);
 //Update a customer by ID
 router.put('/:id', customer.update);
 
-//Get customer by Attribute
+//Get customer by Customer Type
 router.get('/attributes/customerType/:customerType', customer.findOneByAttr);
+
+//Get Customer by Email
 router.get('/attributes/email/:email', customer.findOneByAttr);
+
+//Get Customer by Fiscal Address
 router.get('/attributes/fiscal_address/:fiscal_address', customer.findOneByAttr);
+
+//Get Customer by Building
 router.get('/attributes/buildings/:building', customer.findByAttr);
 
 //Delete a single customer by ID
