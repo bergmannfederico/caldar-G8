@@ -4,3 +4,4 @@ package-lock.json
 dist/
 app/controllers/dist/
 .vscode/
+data/

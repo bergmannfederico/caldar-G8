@@ -15,7 +15,6 @@ app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 2);
 app.use(cors());
 app.use(router);
-
 db.mongoose
     .connect(db.url, {
         useNewUrlParser: true,
@@ -32,4 +31,4 @@ db.mongoose
 
 app.listen(port, () => {
     console.log(`Server started on port: ${port}`);
-})
+});
