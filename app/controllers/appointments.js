@@ -24,7 +24,6 @@ exports.findAll = (req, res) =>{
 /*
 // Get appointments by Attribute
 exports.findOneByAttr = (req, res) =>{
-    logger.info('asdddddddddddddddddddddddddddddddddddddddddddddd');
     logger.info(req.params.id);
     if(req.params.id){
         getAttribute(req.params.id)
