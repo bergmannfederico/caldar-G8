@@ -1,19 +1,25 @@
 const router = require('express').Router();
-const boilers = require('../controllers/boilers.js');
+const boiler = require('../controllers/boilers.js');
 
 // Get all boiler
-router.get('/', boilers.findAll);
+router.get('/', boiler.findAll);
 
 //Get boiler by Attribute: skillsId
-router.get('/skillsId/:skillsId', boilers.findOneBySkillsId);
+router.get('/skillsId/:skillsId', boiler.findOneBySkillsId);
 
 //Get boiler by Attribute: description
-router.get('/description', boilers.findOneByDescription);
+router.get('/description', boiler.findOneByDescription);
 
 //Get boiler by ID
-router.get('/id/:id', boilers.findOneById);
+router.get('/id/:id', boiler.findOneById);
 
 //Delete boiler by id
-router.delete('/id/:id', boilers.delete);
+router.delete('/id/:id', boiler.delete);
+
+//Create new boiler
+router.post('/', boiler.create);
+
+//Update boiler by Id
+router.put('/:id', boiler.update);
 
 module.exports = router;
