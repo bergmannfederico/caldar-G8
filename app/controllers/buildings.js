@@ -1,7 +1,8 @@
 const db = require('../models');
 const Building = db.building;
 require('slf4n-logging');
-const logger = LoggerFactory.getLogger('Buildings')
+// eslint-disable-next-line no-undef
+const logger = LoggerFactory.getLogger('Buildings');
 
 // Get all buildings
 exports.findAll = (req, res) => {

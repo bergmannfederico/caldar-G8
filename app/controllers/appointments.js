@@ -1,7 +1,4 @@
-//const fs = require('fs');
-//const dataPath = './data/appointments.json';
 require('slf4n-logging');
-const logger = LoggerFactory.getLogger('Appointments')
 
 const db = require('../models');
 const Appointment = db.appointments;
