@@ -109,7 +109,7 @@ exports.delete = (req, res) => {
 //Retrieve Customer by Attibute
 
 //Retrieve Customers by Customer Type 
-exports.findOneByAttr = (req, res) => {
+exports.findOneByType = (req, res) => {
     Customer.find({ customerType: req.params.customerType })
         .then(data => {
             if (!data) {
@@ -127,7 +127,7 @@ exports.findOneByAttr = (req, res) => {
 };
 
 //Retrieve Customer by Email
-exports.findOneByAttr = (req, res) => {
+exports.findOneByEmail = (req, res) => {
     Customer.find({ email: req.params.email })
         .then(data => {
             if (!data) {
@@ -144,8 +144,9 @@ exports.findOneByAttr = (req, res) => {
         });
 };
 
+
 //Retrieve Customer By Fiscal Address
-exports.findOneByAttr = (req, res) => {
+exports.findOneByAddress = (req, res) => {
     Customer.find({ fiscal_address: req.params.fiscal_address })
         .then(data => {
             if (!data) {
@@ -164,7 +165,7 @@ exports.findOneByAttr = (req, res) => {
 
 
 //Retrieve Customer By Building
-exports.findByAttr = (req, res) => {
+exports.findByBuilding = (req, res) => {
     Customer.find({
         buildings: parseInt(req.params.building)
 

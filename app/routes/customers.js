@@ -14,16 +14,16 @@ router.get('/:id', customer.findOne);
 router.put('/:id', customer.update);
 
 //Get customer by Customer Type
-router.get('/attributes/customerType/:customerType', customer.findOneByAttr);
+router.get('/attributes/customerType/:customerType', customer.findOneByType);
 
 //Get Customer by Email
-router.get('/attributes/email/:email', customer.findOneByAttr);
+router.get('/attributes/email/:email', customer.findOneByEmail);
 
 //Get Customer by Fiscal Address
-router.get('/attributes/fiscal_address/:fiscal_address', customer.findOneByAttr);
+router.get('/attributes/fiscal_address/:fiscal_address', customer.findOneByAddress);
 
 //Get Customer by Building
-router.get('/attributes/buildings/:building', customer.findByAttr);
+router.get('/attributes/buildings/:building', customer.findByBuilding);
 
 //Delete a single customer by ID
 router.delete('/:id', customer.delete);
