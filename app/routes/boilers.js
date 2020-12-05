@@ -8,7 +8,7 @@ router.get('/', boiler.findAll);
 router.get('/skillsId/:skillsId', boiler.findOneBySkillsId);
 
 //Get boiler by Attribute: description
-router.get('/description', boiler.findOneByDescription);
+router.get('/description/:description', boiler.findOneByDescription);
 
 //Get boiler by ID
 router.get('/id/:id', boiler.findOneById);

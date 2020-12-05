@@ -1,6 +1,6 @@
 
 const db = require('../models');
-const boilerData = db.boilers-data;
+const boilerData = db.boilersData;
 
 
 // Get all boilers-data
@@ -12,20 +12,20 @@ exports.findAll = (require, response) => {
         .catch(err => {
             response.status(500).send({
                 msg: "The requirement could not be found"
-            })
-        })
+            });
+        });
 };
 
 // Get boiler-data by ID
-exports.findById = (require, response) => {
-    boilerData.findById({ id: require.params.id })
+exports.findByIdData = (require, response) => {
+    boilerData.find({ id: require.params.id })
         .then(data => {
             if (!data) {
                 return response.status(404).send({
                     msg: `No boiler-data found with the id ${require.params.id}.`
                 })
             }
-            response.send(data)
+            response.send(data);
         })
         .catch(err => {
             response.status(500).send({
@@ -36,14 +36,14 @@ exports.findById = (require, response) => {
 
 // Get boiler-data by attribute: typeID
 exports.findByTypeId = (require, response) => {
-    boilerData.findByTypeId({ typeId: require.params.typeId })
+    boilerData.find({ typeId: require.params.typeId })
         .then(data => {
             if (!data) {
                 return response.status(404).send({
                     msg: `No boiler-data found with the typeId ${require.params.typeId}.`
                 })
             }
-            response.send(data)
+            response.send(data);
         })
         .catch(err => {
             response.status(500).send({
@@ -54,14 +54,14 @@ exports.findByTypeId = (require, response) => {
 
 // Get boiler-data by attribute: maintenance_rate
 exports.findByMaintenanceRate = (require, response) => {
-    boilerData.findByMaintenanceRate({ maintenance_rate: require.params.maintenance_rate })
+    boilerData.find({ maintenance_rate: require.params.maintenance_rate })
         .then(data => {
             if (!data) {
                 return response.status(404).send({
                     msg: `No boiler-data found with the maintenance rate ${require.params.maintenance_rate}.`
                 })
             }
-            response.send(data)
+            response.send(data);
         })
         .catch(err => {
             response.status(500).send({

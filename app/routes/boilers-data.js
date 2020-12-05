@@ -5,7 +5,7 @@ const boilerData = require('../controllers/boilers-data.js');
 router.get('/', boilerData.findAll);
 
 //Get boiler by Attribute: id
-router.get('/id/:id', boilerData.findById);
+router.get('/id/:id', boilerData.findByIdData);
 
 //Get boiler by Attribute: type id
 router.get('/typeId/:typeId', boilerData.findByTypeId);

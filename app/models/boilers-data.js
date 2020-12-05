@@ -1,5 +1,5 @@
 module.exports = mongoose => {
-    const boilersData = mongoose.model(
+    const boilerData = mongoose.model(
         "boilers-data",
         mongoose.Schema(
             {
@@ -11,5 +11,5 @@ module.exports = mongoose => {
             },
         )
     );
-    return boilersData;
+    return boilerData;
 };
