@@ -7,7 +7,9 @@ module.exports = mongoose => {
                 skillsId: [],
                 description: String,
                 stock: Number,
-            },
+            }, {
+                timestamps: true
+            }
         )
     );
     return boilers;
