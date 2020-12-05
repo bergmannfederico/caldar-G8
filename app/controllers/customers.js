@@ -89,7 +89,7 @@ exports.update = (req, res) => {
                 });
             } else res.send({ msg: "Customer was updated successfully." });
         })
-        .catch(err => {
+        .catch(() => {
             res.status(500).send({ msg: "Error updating Customer with id=" + id });
         });
 };
@@ -98,10 +98,10 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
     Customer.findOneAndRemove({ id }, { useFindAndModify: false })
-        .then(data =>
+        .then(() =>
             res.send({ message: "Customer was removed successfully." })
         )
-        .catch(err => {
+        .catch(() => {
             res.status(500).send({ msg: "Error removing Customer with id=" + id });
         });
 };

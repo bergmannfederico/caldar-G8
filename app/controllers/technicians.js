@@ -1,4 +1,5 @@
 require('slf4n-logging');
+// eslint-disable-next-line no-undef
 const logger = LoggerFactory.getLogger('Technicians');
 const db = require('../models');
 const Technicians = db.technicians;
