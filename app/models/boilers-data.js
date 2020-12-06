@@ -6,8 +6,8 @@ module.exports = mongoose => {
                 id: Number,
                 typeId: Number,
                 maintenance_rate: String,
-                hour_maintenance_cost: Number,
-                hour_eventual_cost: Number,
+                hour_maintenance_cost: String,
+                hour_eventual_cost: String,
             },
         )
     );

@@ -74,7 +74,7 @@ exports.findByMaintenanceRate = (require, response) => {
 exports.delete = (require, response) => {
     const id = require.params.id;
     boilerData.findOneAndDelete({ id }, { useFindAndModify: false })
-        .then(data =>
+        .then(() =>
             response.send({ message: "Boiler-data was deleted." })
         )
         .catch(err => {
@@ -87,7 +87,7 @@ exports.create = (require, response) => {
     if (!require.body.id || !require.body.typeId || !require.body.maintenance_rate || !require.body.hour_maintenance_cost || !require.body.hour_eventual_cost) {
         return response.status(400).send({
             msg: "No field can be empty."
-        })
+        });
     }
     //Create new boiler-data
     const boiler = new boilerData({
@@ -97,13 +97,13 @@ exports.create = (require, response) => {
         hour_maintenance_cost: require.body.hour_maintenance_cost,
         hour_eventual_cost: require.body.hour_eventual_cost
     })
-    boilerData.save(boilerData)
+    boiler.save(boiler)
     .then(data => {
         response.send(data);
     })
     .catch(err => {
         response.status(500).send({
-            msg: "Some error ocurred while creating the boiler-data."
+            msg: err.message || "Some error ocurred while creating the boiler-data."
         });
     });
 };
