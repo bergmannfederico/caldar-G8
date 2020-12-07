@@ -89,7 +89,7 @@ exports.create = (require, response) => {
         return;
     }
     //Create new boiler
-    const boiler = new Boiler({
+    const boiler = new boiler({
         id: require.body.id,
         skillsId: require.body.skillsId,
         description: require.body.description

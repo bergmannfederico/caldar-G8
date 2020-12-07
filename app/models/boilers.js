@@ -4,7 +4,7 @@ module.exports = mongoose => {
         mongoose.Schema(
             {
                 id: Number,
-                skillsId: [],
+                skillsId: Array,
                 description: String,
                 stock: Number,
             }, {

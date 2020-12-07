@@ -1,10 +1,8 @@
-
 const db = require('../models');
 const boilerData = db.boilersData;
 
-
 // Get all boilers-data
-exports.findAll = (require, response) => {
+exports.findAllData = (require, response) => {
     boilerData.find({})
         .then(data=> {
             response.send(data);
@@ -17,7 +15,7 @@ exports.findAll = (require, response) => {
 };
 
 // Get boiler-data by ID
-exports.findByIdData = (require, response) => {
+exports.findOneByIdData = (require, response) => {
     boilerData.find({ id: require.params.id })
         .then(data => {
             if (!data) {
@@ -35,8 +33,8 @@ exports.findByIdData = (require, response) => {
 };
 
 // Get boiler-data by attribute: typeID
-exports.findByTypeId = (require, response) => {
-    boilerData.find({ typeId: require.params.typeId })
+exports.findOneByTypeId = (require, response) => {
+    boilerData.find({ typeId: parseInt(require.params.typeId )})
         .then(data => {
             if (!data) {
                 return response.status(404).send({
@@ -53,7 +51,7 @@ exports.findByTypeId = (require, response) => {
 };
 
 // Get boiler-data by attribute: maintenance_rate
-exports.findByMaintenanceRate = (require, response) => {
+exports.findOneByMaintenanceRate = (require, response) => {
     boilerData.find({ maintenance_rate: require.params.maintenance_rate })
         .then(data => {
             if (!data) {
@@ -96,7 +94,7 @@ exports.create = (require, response) => {
         maintenance_rate: require.body.maintenance_rate,
         hour_maintenance_cost: require.body.hour_maintenance_cost,
         hour_eventual_cost: require.body.hour_eventual_cost
-    })
+    });
     boiler.save(boiler)
     .then(data => {
         response.send(data);

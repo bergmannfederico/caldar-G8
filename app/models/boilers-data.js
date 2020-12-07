@@ -1,6 +1,6 @@
 module.exports = mongoose => {
-    const boilerData = mongoose.model(
-        "boilers-data",
+    const boilersData = mongoose.model(
+        "boilers-datas",
         mongoose.Schema(
             {
                 id: Number,
@@ -8,8 +8,10 @@ module.exports = mongoose => {
                 maintenance_rate: String,
                 hour_maintenance_cost: String,
                 hour_eventual_cost: String,
-            },
+            }, {
+                timestamps: true
+            }
         )
     );
-    return boilerData;
+    return boilersData;
 };

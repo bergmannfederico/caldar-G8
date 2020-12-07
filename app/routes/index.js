@@ -20,7 +20,7 @@ router.use('/customers', customersRouter);
 router.use('/appointments', appointmentsRouter);
 
 // Boilers-data API routes
-router.use('/boilers-data', boilersDataRouter);
+router.use('/boilers-datas', boilersDataRouter);
 
 // Boilers API routes
 router.use('/boilers', boilersRouter);
