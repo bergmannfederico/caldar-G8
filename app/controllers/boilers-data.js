@@ -114,7 +114,7 @@ exports.update = (require, response) => {
         });
     }
     if (!require.body.id || !require.body.typeId || !require.body.maintenance_rate || !require.body.hour_maintenance_cost || !require.body.hour_eventual_cost) {
-        res.status(400).send({
+        response.status(400).send({
             msg: "Content cannot be empty!"
         });
         return;
