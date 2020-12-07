@@ -108,6 +108,24 @@ exports.delete = (req, res) => {
 
 //Retrieve Customer by Attibute
 
+//Retrieve Customers by Customer
+exports.findOneByCustomer = (req, res) => {
+    Customer.find({ customer: req.params.customer })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with full name ${req.params.customer} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
 //Retrieve Customers by Customer Type 
 exports.findOneByType = (req, res) => {
     Customer.find({ customerType: req.params.customerType })
@@ -133,6 +151,24 @@ exports.findOneByEmail = (req, res) => {
             if (!data) {
                 return res.status(404).send({
                     msg: `Customers with ${req.params.email} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
+//Retrieve Customer by Phone number
+exports.findOneByPhone = (req, res) => {
+    Customer.find({ phone: req.params.phone })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with phone ${req.params.email} were not found.`
                 })
             }
             res.send(data)

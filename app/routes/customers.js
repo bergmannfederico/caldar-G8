@@ -13,6 +13,9 @@ router.get('/:id', customer.findOne);
 //Update a customer by ID
 router.put('/:id', customer.update);
 
+//Get customer by Customer Name
+router.get('/attributes/customer/:customer', customer.findOneByCustomer);
+
 //Get customer by Customer Type
 router.get('/attributes/customerType/:customerType', customer.findOneByType);
 
@@ -21,6 +24,9 @@ router.get('/attributes/email/:email', customer.findOneByEmail);
 
 //Get Customer by Fiscal Address
 router.get('/attributes/fiscal_address/:fiscal_address', customer.findOneByAddress);
+
+///Get Customer by Phone
+router.get('/attributes/phone/:phone', customer.findOneByPhone);
 
 //Get Customer by Building
 router.get('/attributes/buildings/:building', customer.findByBuilding);
