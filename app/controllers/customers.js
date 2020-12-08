@@ -1,90 +1,223 @@
-const express = require('express');
-//const uuid = require('uuid'); to update and create 
-const router = express.Router();
-const customers = require('../../data/customers.json');
+const db = require('../models');
+const Customer = db.customer;
 
-const idFilter = req => customer => customer.id === parseInt(req.params.id);
-const typeFilter = req => customer => customer.customerType === req.params.customerType;
-const emailFilter = req => customer => customer.email === req.params.email;
-const addressFilter = req => customer => customer.fiscal_address === req.params.fiscal_address;
-const buildingFilter = req => customer => customer.buildings === req.params.buildings;
-
-
-//Get All Customers
-router.get('/', (req, res) => {
-    res.json(customers)
-});
-
-//Get Customer By ID
-router.get('/:id', (req, res) => {
-
-    const found = customers.some(idFilter(req));
-
-    if (found) {
-        res.json(customers.filter(idFilter(req)));
-    } else {
-        res.status(400).json({ msg: `No customer with the id of ${req.params.id}` });
-    }
-});
-
-//Get Customers By Attribute
-//By Customer Type
-router.get('/attributes/customerType/:customerType', (req, res) => {
-
-    const found = customers.some(typeFilter(req));
-    if (found) {
-        res.json(customers.filter(typeFilter(req)));
-    } else {
-        res.status(400).json({ msg: `No customer with the customer type of ${req.params.customerType}` });
-    }
-})
-
-//By Email
-router.get('/attributes/email/:email', (req, res) => {
-
-    const found = customers.some(emailFilter(req));
-    if (found) {
-        res.json(customers.filter(emailFilter(req)));
-    } else {
-        res.status(400).json({ msg: `No customer with the email of ${req.params.email}` });
-    }
-})
-
-//By Fiscal Address
-router.get('/attributes/fiscal_address/:fiscal_address', (req, res) => {
-
-    const found = customers.some(addressFilter(req));
-    if (found) {
-        res.json(customers.filter(addressFilter(req)));
-    } else {
-        res.status(400).json({ msg: `No customer with the fiscal address of ${req.params.fiscal_address}` });
-    }
-})
-
-//By Buildings 
-//I keep looking for the solution
-router.get('/attributes/buildings/:id', (req, res) => {
-
-    const found = customers.some(buildingFilter(req));
-    if (found) {
-        res.json(customers.filter(buildingFilter(req)));
-    } else {
-        res.status(400).json({ msg: `No customer with the building of id ${req.params.buildings}` });
+//Create and Save a new Customer
+exports.create = (req, res) => {
+    //Validate request
+    if (!req.body.customerType || !req.body.email || !req.body.buildings || !req.body.fiscal_address) {
+        res.status(400).send({
+            msg: "Content cannot be empty!"
+        });
+        return;
     }
 
-})
+    //Create a Customer
+    const customer = new Customer({
+        id: req.body.id,
+        customerType: req.body.customerType,
+        email: req.body.email,
+        building: req.body.buildings,
+        fiscal_address: req.body.fiscal_address,
+    });
 
-
-//Delete Customer By ID
-router.delete('/:id', (req, res) => {
-    const found = customers.some(idFilter(req));
-    if (found) {
-        res.json({
-            msg: "Customer deleted",
-            customers: customers.filter(customer => !idFilter(req)(customer))
+    //Save Customer in the database
+    customer
+        .save(customer)
+        .then(data => {
+            res.send(data);
         })
-    } else {
-        res.status(400).json({ msg: `No customer with the id of ${req.params.id}` });
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while creating the Customer."
+            });
+        });
+};
+
+//Retrieve all Customers from Database
+exports.findAll = (req, res) => {
+    Customer.find({})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving Customers"
+            });
+        });
+};
+
+//Find a Customer by ID
+exports.findOne = (req, res) => {
+    Customer.findOne({ id: req.params.id })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customer with id ${req.params.id} was not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customer."
+            });
+        });
+};
+
+//Update a Customer by ID
+exports.update = (req, res) => {
+    if (!req.body) {
+        return res.status(400).send({
+            msg: "Data to update cannot to be empty!"
+        });
     }
-})
-module.exports = router;
+
+    //Validate request
+    if (!req.body.customerType || !req.body.email || !req.body.buildings || !req.body.fiscal_address) {
+        res.status(400).send({
+            msg: "Content cannot be empty!"
+        });
+        return;
+    }
+    const id = req.params.id;
+
+    Customer.findOneAndUpdate({ id }, req.body, { useFindAndModify: true })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Cannot update Customer with id=${id}. Maybe customer was not found!`
+                });
+            } else res.send({ msg: "Customer was updated successfully." });
+        })
+        .catch(() => {
+            res.status(500).send({ msg: "Error updating Customer with id=" + id });
+        });
+};
+
+//Delete a Customer by ID
+exports.delete = (req, res) => {
+    const id = req.params.id;
+    Customer.findOneAndRemove({ id }, { useFindAndModify: false })
+        .then(() =>
+            res.send({ message: "Customer was removed successfully." })
+        )
+        .catch(() => {
+            res.status(500).send({ msg: "Error removing Customer with id=" + id });
+        });
+};
+
+//Retrieve Customer by Attibute
+
+//Retrieve Customers by Customer
+exports.findOneByCustomer = (req, res) => {
+    Customer.find({ customer: req.params.customer })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with full name ${req.params.customer} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
+//Retrieve Customers by Customer Type 
+exports.findOneByType = (req, res) => {
+    Customer.find({ customerType: req.params.customerType })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with ${req.params.customerType} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
+//Retrieve Customer by Email
+exports.findOneByEmail = (req, res) => {
+    Customer.find({ email: req.params.email })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with ${req.params.email} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
+//Retrieve Customer by Phone number
+exports.findOneByPhone = (req, res) => {
+    Customer.find({ phone: req.params.phone })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with phone ${req.params.email} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
+
+//Retrieve Customer By Fiscal Address
+exports.findOneByAddress = (req, res) => {
+    Customer.find({ fiscal_address: req.params.fiscal_address })
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with ${req.params.fiscal_address} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
+
+
+//Retrieve Customer By Building
+exports.findByBuilding = (req, res) => {
+    Customer.find({
+        buildings: parseInt(req.params.building)
+
+    })
+
+    .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    msg: `Customers with ${req.params.buildings} were not found.`
+                })
+            }
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                msg: err.message || "Some error occurred while retrieving customers."
+            });
+        });
+};
