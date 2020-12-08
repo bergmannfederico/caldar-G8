@@ -1,13 +1,14 @@
+var router = require('express').Router();
 const buildingsRouter = require('./buildings');
+const boilersRouter = require('./boilers');
+const boilersDataRouter = require('./boilers-data');
 const appointmentsRouter = require('./appointments');
 const customersRouter = require('./customers');
-var router = require('express').Router();
 const techniciansRouter = require('./technicians');
 
 
 // Building API Routes
 router.use('/buildings', buildingsRouter);
-
 
 // Technicians API Routes
 router.use('/technicians', techniciansRouter);
@@ -19,10 +20,10 @@ router.use('/customers', customersRouter);
 router.use('/appointments', appointmentsRouter);
 
 // Boilers-data API routes
-router.use('/boilers-data', require('../controllers/boilers-data'));
+router.use('/boilers-datas', boilersDataRouter);
 
 // Boilers API routes
-router.use('/boilers', require('../controllers/boilers'));
+router.use('/boilers', boilersRouter);
 
 
 module.exports = router;
